@@ -1,0 +1,8 @@
+<div class="jumbotron text-center">
+  <h1> MEAN Authentication APP</h1>
+  <p class="lead">App built in MEAN</p>
+  <div *ngIf="!authService.loggedIn()">
+    <a class="btn btn-primary" [routerLink]="['/login']">Login</a>
+    <a class="btn btn-primary" [routerLink]="['/register']">Register</a>
+  </div>
+</div>
