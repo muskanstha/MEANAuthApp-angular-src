@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Http, Headers } from '@angular/http';
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 
 
@@ -20,7 +20,9 @@ export class AuthService {
   authToken: any;
   user: any;
 
-  constructor(private http: Http) {
+  userRole: String;
+
+  constructor(private http: Http, private httpc: HttpClient) {
     this.localhost = 'http://localhost:8080/';
     // this.localhost = '';
   }
@@ -43,6 +45,17 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  deleteUser(id: String) {
+    const headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+    return this.http.delete(this.localhost + 'api/users/delete/' + id, {
+      headers: headers
+    })
+      .map(res => res.json());
+  }
+
   getProfile() {
     const headers = new Headers();
     this.loadToken();
@@ -54,12 +67,34 @@ export class AuthService {
       .map(res => res.json());
   }
 
+  getProfilec() {
+    this.loadToken();
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': this.authToken })
+    };
+    return this.httpc.get(this.localhost + 'api/users/profile', httpOptions);
+  }
   getOtherUsers() {
     const headers = new Headers();
     this.loadToken();
     headers.append('Authorization', this.authToken);
     headers.append('Content-Type', 'application/json');
     return this.http.get(this.localhost + 'api/users', {
+      headers: headers
+    })
+      .map(res => {
+        const data: UserData = res.json();
+        return data.users;
+      }
+      );
+  }
+
+  getAllUsers() {
+    const headers = new Headers();
+    this.loadToken();
+    headers.append('Authorization', this.authToken);
+    headers.append('Content-Type', 'application/json');
+    return this.http.get(this.localhost + 'api/users/manage', {
       headers: headers
     })
       .map(res => {
@@ -121,9 +156,68 @@ export class AuthService {
     this.authToken = token;
   }
 
+
   loggedIn() {
     return tokenNotExpired();
   }
+
+  // adminLoggedIn() {
+  //   this.getProfilec().subscribe(profile => {
+  //     this.userRole = profile.user.permission;
+  //     console.log(this.userRole);
+  //   },
+  //     err => {
+  //       console.log(err);
+  //       return false;
+  //     });
+  //   if (this.userRole === 'admin') {
+  //     this.getProfilec().subscribe(profile => {
+  //       this.userRole = profile.user.permission;
+  //     },
+  //       err => {
+  //         console.log(err);
+  //         return false;
+  //       });
+  //   }
+  //   if (this.userRole === 'admin') {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
+
+  // adminLoggedIn() {
+  //   if (tokenNotExpired()) {
+  //     return this.getProfile().map(profile => {
+  //       this.user = profile.user;
+  //       console.log(this.user);
+  //       if (this.user.permission === 'admin') {
+  //         return true;
+  //       }
+  //       else {
+  //         return false;
+  //       }
+  //     });
+  //   }
+  // }
+
+  adminLoggedIn() {
+    if (tokenNotExpired()) {
+      const aUser = localStorage.getItem('user');
+      if (aUser === null) {
+        return false;
+      }
+      this.user = JSON.parse(aUser);
+
+      if (this.user.permission === 'admin') {
+        return true;
+      }
+      else {
+        return false;
+      }
+    }
+  }
+
 
   logout() {
     this.authToken = null;

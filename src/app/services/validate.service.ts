@@ -15,6 +15,12 @@ export class ValidateService {
     }
   }
 
+  validateEmail(email) {
+    // tslint:disable-next-line:max-line-length
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
   validateCreate(post) {
     // tslint:disable-next-line:max-line-length
     if (post.title === undefined || post.content === undefined) {
@@ -23,10 +29,5 @@ export class ValidateService {
       return true;
     }
   }
-  validateEmail(email) {
-    // tslint:disable-next-line:max-line-length
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(email);
-  }
-
 }
+

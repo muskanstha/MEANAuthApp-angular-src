@@ -1,6 +1,9 @@
 <section class="menu">
   <div class="user-group">
     <ul class="users">
+        <!-- <div *ngIf="authService.adminLoggedIn()">
+            <a class="btn btn-primary" [routerLink]="['/users/manage']">Manage Users</a>
+          </div> -->
       <li *ngFor="let user of users">
         <h5>{{user.name}}</h5>
         <p>- {{user.username}} - {{user.email}}</p>

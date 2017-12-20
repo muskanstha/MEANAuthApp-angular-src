@@ -28,6 +28,9 @@
       <li *ngIf="authService.loggedIn()" class="nav-item">
         <a class="nav-link" [routerLink]="['/users']">Users</a>
       </li>
+      <li *ngIf="authService.adminLoggedIn()" class="nav-item">
+        <a class="nav-link" [routerLink]="['/users/manage']">Manage Users</a>
+      </li>
       <li *ngIf="authService.loggedIn()" class="nav-item">
         <a class="nav-link" (click)="onLogOutClick()" href="#">Logout</a>
       </li>

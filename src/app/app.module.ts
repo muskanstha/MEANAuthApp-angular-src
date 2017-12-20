@@ -22,19 +22,25 @@ import { AuthService } from './services/auth.service';
 import { FlashMessagesModule, FlashMessagesService } from 'angular2-flash-messages';
 
 import { AuthGuard } from './guards/auth.guard';
+import { NotAuthGuard } from './guards/notauth.guard';
+
 import { PostComponent } from './components/post/post.component';
 import { UsersComponent } from './components/users/users.component';
 import { CreatePostComponent } from './components/create-post/create-post.component';
+import { ManageUsersComponent } from './components/manage-users/manage-users.component';
+import { AdminGuard } from './guards/admin.guard';
+import { HttpClientModule } from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
-  { path: 'register', component: RegisterComponent, pathMatch: 'full' },
-  { path: 'login', component: LoginComponent, pathMatch: 'full' },
+  { path: 'register', component: RegisterComponent, pathMatch: 'full', canActivate: [NotAuthGuard] },
+  { path: 'login', component: LoginComponent, pathMatch: 'full', canActivate: [NotAuthGuard] },
   { path: 'dashboard', component: DashboardComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   { path: 'profile', component: ProfileComponent, pathMatch: 'full', canActivate: [AuthGuard] },
   { path: 'posts/:title', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'post/create', component: CreatePostComponent, canActivate: [AuthGuard] },
   { path: 'users', component: UsersComponent, pathMatch: 'full', canActivate: [AuthGuard] },
+  { path: 'users/manage', component: ManageUsersComponent, pathMatch: 'full', canActivate: [AdminGuard] },
 ];
 
 @NgModule({
@@ -49,11 +55,13 @@ const appRoutes: Routes = [
     PostComponent,
     UsersComponent,
     CreatePostComponent,
+    ManageUsersComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
+    HttpClientModule,
     RouterModule.forRoot(appRoutes),
     FlashMessagesModule.forRoot()
   ],
@@ -62,6 +70,8 @@ const appRoutes: Routes = [
     FlashMessagesService,
     AuthService,
     AuthGuard,
+    NotAuthGuard,
+    AdminGuard
   ],
   bootstrap: [AppComponent]
 })

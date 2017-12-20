@@ -1,0 +1,13 @@
+<section class="menu">
+  <div class="user-group">
+    <ul class="users">
+      <li *ngFor="let user of users">
+        <h5>{{user.name}} - {{user.permission}}</h5>
+        <p>- {{user.username}} - {{user.email}} - {{user.phone}}</p>
+        <button  (click)="deleteUser(user._id, user.username)">Delete User</button>
+        <br/>
+        <br/>
+      </li>
+    </ul>
+  </div>
+</section>
