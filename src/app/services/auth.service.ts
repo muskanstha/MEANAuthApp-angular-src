@@ -211,8 +211,7 @@ export class AuthService {
 
       if (this.user.permission === 'admin') {
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     }

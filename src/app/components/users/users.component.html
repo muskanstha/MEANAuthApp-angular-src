@@ -7,6 +7,9 @@
       <li *ngFor="let user of users">
         <h5>{{user.name}}</h5>
         <p>- {{user.username}} - {{user.email}}</p>
+        <button *ngIf="authService.adminLoggedIn()" (click)="deleteUser(user._id, user.username)">Delete User</button> 
+        <br/>
+        <br/>
       </li>
     </ul>
   </div>

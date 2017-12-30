@@ -30,15 +30,15 @@ export class ManageUsersComponent implements OnInit {
       });
   }
   deleteUser(id: String, username: String) {
-    if (confirm("Are you sure you want to delete user: " + username)) {
+    if (confirm('Are you sure you want to delete user: ' + username)) {
       console.log('trying');
       this.authService.deleteUser(id).subscribe(data => {
         if (data.success) {
           this.flashMessage.show('User successfully deleted', { cssClass: 'alert-success', timeout: 3000 });
-          this.router.navigate(['/login']);
+          this.ngOnInit();
         } else {
           this.flashMessage.show('Could not delete user', { cssClass: 'alert-danger', timeout: 3000 });
-          this.router.navigate(['/register']);
+          this.ngOnInit();
         }
       });
     }
